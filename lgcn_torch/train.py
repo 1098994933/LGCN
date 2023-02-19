@@ -137,13 +137,16 @@ def train(args):
 
         logging.info("Optimization Finished!")
         logging.info("Total time elapsed: {:.4f}s".format(time.time() - t_total))
+        print("Optimization Finished!")
+        print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
         if not best_test_metrics:
             model.eval()
             best_emb = model.encode(data['features'], data['adj_train_norm'])
             best_test_metrics = model.compute_metrics(best_emb, data, 'test')
         logging.info(" ".join(["Val set results:", format_metrics(best_val_metrics, 'val')]))
         logging.info(" ".join(["Test set results:", format_metrics(best_test_metrics, 'test')]))
-
+        print(" ".join(["Val set results:", format_metrics(best_val_metrics, 'val')]))
+        print(" ".join(["Test set results:", format_metrics(best_test_metrics, 'test')]))
         if args.save:
             print('Saved path', os.path.join(save_dir, 'embeddings.npy'))
             np.save(os.path.join(save_dir, 'embeddings.npy'), best_emb.cpu().detach().numpy())
